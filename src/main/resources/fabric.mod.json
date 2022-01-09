@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "takeeverything",
+  "version": "0.0.1-1.17.1",
+  "name": "Take Everything",
+  "description": "Take Everything from an inventory",
+  "authors": [
+    "kyrptonaught"
+  ],
+  "contact": {
+    "homepage": "https://github.com/kyrptonaught/Take-Everything",
+    "sources": "https://github.com/kyrptonaught/Take-Everything"
+  },
+  "license": "MIT",
+  "icon": "assets/takeeverything/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["net.kyrptonaught.takeeverything.TakeEverythingMod"]
+  },
+  "mixins": [
+    {
+      "config": "takeeverything.mixins.json",
+      "environment": "*"
+    }
+  ]
+}
