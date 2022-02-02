@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "takeeverything",
-  "version": "0.0.1-1.17.1",
+  "version": "1.0.0-1.17.1",
   "name": "Take Everything",
   "description": "Take Everything from an inventory",
   "authors": [
