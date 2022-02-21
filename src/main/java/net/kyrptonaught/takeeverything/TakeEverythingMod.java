@@ -2,31 +2,23 @@ package net.kyrptonaught.takeeverything;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.sun.jdi.connect.Connector;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.event.GameEvent;
 
 
 public class TakeEverythingMod implements ModInitializer {
@@ -75,6 +67,21 @@ public class TakeEverythingMod implements ModInitializer {
         return true;
     }
 
+    public static Boolean canEquip(PlayerEntity player, ItemStack armor){
+        EquipmentSlot equipmentSlot = ((ArmorItem) armor.getItem()).getSlotType();
+        ItemStack equipped = player.getEquippedStack(equipmentSlot);
+        return equipped.isEmpty();
+    }
+
+    public static Boolean canSwap(PlayerEntity player, ItemStack armor) {
+        EquipmentSlot equipmentSlot = ((ArmorItem) armor.getItem()).getSlotType();
+        ItemStack equipped = player.getEquippedStack(equipmentSlot);
+        if (equipped.getItem() instanceof ArmorItem onArmor && canRemove(equipped))
+            if (((ArmorItem) armor.getItem()).getProtection() > onArmor.getProtection())
+                return true;
+        return false;
+    }
+
     public static ItemStack equipOrSwapArmor(PlayerEntity player, ItemStack armor) {
         EquipmentSlot equipmentSlot = ((ArmorItem) armor.getItem()).getSlotType();
         ItemStack equipped = player.getEquippedStack(equipmentSlot);
@@ -95,7 +102,7 @@ public class TakeEverythingMod implements ModInitializer {
     }
 
     public static Boolean canRemove(ItemStack stack) {
-        return !EnchantmentHelper.hasBindingCurse(stack);
+        return !stack.hasEnchantments();
     }
 
     public static void playSound(ItemStack stack, ServerPlayerEntity player) {

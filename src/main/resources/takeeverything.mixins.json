@@ -3,7 +3,8 @@
   "package": "net.kyrptonaught.takeeverything.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "ScreenHandlerMixin"
+    "ScreenHandlerMixin",
+    "ItemEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
