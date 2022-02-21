@@ -6,6 +6,8 @@ import com.sun.jdi.connect.Connector;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,8 +22,11 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.world.event.GameEvent;
 
 
 public class TakeEverythingMod implements ModInitializer {
@@ -75,15 +80,29 @@ public class TakeEverythingMod implements ModInitializer {
         ItemStack equipped = player.getEquippedStack(equipmentSlot);
         if (equipped.isEmpty()) {
             player.equipStack(equipmentSlot, armor.copy());
+            playSound(armor, (ServerPlayerEntity) player);
             armor.setCount(0);
-        } else if (equipped.getItem() instanceof ArmorItem onArmor) {
+        } else if (equipped.getItem() instanceof ArmorItem onArmor && canRemove(equipped)) {
             if (((ArmorItem) armor.getItem()).getProtection() > onArmor.getProtection()) {
                 ItemStack copy = equipped.copy();
                 player.equipStack(equipmentSlot, armor.copy());
+                playSound(armor, (ServerPlayerEntity) player);
                 armor.setCount(0);
                 return copy;
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    public static Boolean canRemove(ItemStack stack) {
+        return !EnchantmentHelper.hasBindingCurse(stack);
+    }
+
+    public static void playSound(ItemStack stack, ServerPlayerEntity player) {
+        SoundEvent soundEvent = stack.getEquipSound();
+        if (stack.isEmpty() || soundEvent == null) {
+            return;
+        }
+        player.playSound(soundEvent, player.getSoundCategory(), 1, 1);
     }
 }
