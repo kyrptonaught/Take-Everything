@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "takeeverything",
-  "version": "1.0.2-1.17.1",
+  "version": "1.0.3-1.17.1",
   "name": "Take Everything",
   "description": "Take Everything from an inventory",
   "authors": [
@@ -15,7 +15,9 @@
   "icon": "assets/takeeverything/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["net.kyrptonaught.takeeverything.TakeEverythingMod"]
+    "main": [
+      "net.kyrptonaught.takeeverything.TakeEverythingMod"
+    ]
   },
   "mixins": [
     {

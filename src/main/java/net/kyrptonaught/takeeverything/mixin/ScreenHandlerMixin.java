@@ -1,6 +1,6 @@
 package net.kyrptonaught.takeeverything.mixin;
 
-import net.kyrptonaught.takeeverything.TakeEverythingMod;
+import net.kyrptonaught.takeeverything.TakeEverythingHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ArmorItem;
@@ -33,14 +33,14 @@ public abstract class ScreenHandlerMixin {
             if (actionType.equals(SlotActionType.QUICK_MOVE)) {
                 Slot slot = slots.get(slotIndex);
                 if (slot.canTakeItems(player) && !(slot.inventory instanceof PlayerInventory) && !slot.getStack().isEmpty() && slot.getStack().getItem() instanceof ArmorItem) {
-                    ItemStack oldStack = TakeEverythingMod.equipOrSwapArmor(player, slot.getStack()); //return already equippedStack or empty
+                    ItemStack oldStack = TakeEverythingHelper.equipOrSwapArmor(player, slot.getStack()); //return already equippedStack or empty
                     if (!oldStack.isEmpty()) slot.setStack(oldStack);
                 }
             } else if ((button == 0 && actionType.equals(SlotActionType.PICKUP_ALL)) ||
                     (button == 2 && actionType.equals(SlotActionType.CLONE)))
                 if (cursorStack.isEmpty())
                     if (slotIndex >= 0 && slotIndex < this.slots.size() && this.slots.get(slotIndex).getStack().isEmpty()) {
-                        TakeEverythingMod.takeEverything((ServerPlayerEntity) player);
+                        TakeEverythingHelper.takeEverything((ServerPlayerEntity) player);
                         ci.cancel();
                     }
         }
