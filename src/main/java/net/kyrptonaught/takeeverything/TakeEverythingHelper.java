@@ -16,6 +16,11 @@ public class TakeEverythingHelper {
         if (!TakeEverythingMod.getConfig().Enabled || player.currentScreenHandler instanceof PlayerScreenHandler) {
             return false;
         }
+
+        if(player.isSpectator() && !TakeEverythingMod.getConfig().worksInSpectator) {
+            return false;
+        }
+
         for (int i = 0; i < player.currentScreenHandler.slots.size(); i++) {
             Slot slot = player.currentScreenHandler.slots.get(i);
             if (!(slot.inventory instanceof PlayerInventory) && slot.canTakeItems(player) && !slot.getStack().isEmpty()) {

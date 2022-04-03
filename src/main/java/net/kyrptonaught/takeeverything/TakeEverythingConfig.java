@@ -8,4 +8,6 @@ public class TakeEverythingConfig implements AbstractConfigFile {
 
     public boolean deleteItemNotDrop = false;
 
+    public boolean worksInSpectator = false;
+
 }

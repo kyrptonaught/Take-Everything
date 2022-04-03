@@ -57,6 +57,12 @@ public class TakeEverythingMod implements ModInitializer {
                             configManager.save();
                             return 1;
                         })))
+                .then(CommandManager.literal("worksInSpectator").then(CommandManager.argument("worksInSpectator", BoolArgumentType.bool())
+                        .executes(context -> {
+                            getConfig().worksInSpectator = BoolArgumentType.getBool(context, "worksInSpectator");
+                            configManager.save();
+                            return 1;
+                        })))
                 .then(CommandManager.literal("deleteItemNotDrop").then(CommandManager.argument("deleteItemNotDrop", BoolArgumentType.bool())
                         .executes(context -> {
                             getConfig().deleteItemNotDrop = BoolArgumentType.getBool(context, "deleteItemNotDrop");
